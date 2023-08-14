@@ -1,0 +1,78 @@
+/* Dot and annotation */
+.popover {
+  width: auto;
+  height: auto;
+  position: absolute;
+  transition: opacity 1.5s ease;
+ /* border-radius: calc(24px / 2);
+  */
+  opacity: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #050505;
+  border-radius: 2px;
+  bottom: auto;
+  box-sizing: border-box;
+  padding: 12px 18px;
+  z-index: 1;
+}
+.popover:before {
+  content: " ";
+  display: block;
+  position: absolute;
+  /* top: -10px; */
+  bottom: -6px;
+  left: calc(50% - 6px);
+  right: 5px;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  /* border-bottom: 10px solid #000; */
+  border-top: 6px solid #000;
+}
+.popover .dot {
+  background: #f5f5f5;
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  opacity: 0;
+  transform-origin: center center;
+  border-radius: 50%;
+  z-index: 2;
+}
+.popover .annotation {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  color: #fff;
+  border-radius: 2px;
+  font-size: 12px;
+  line-height: 1.2;
+  box-sizing: border-box;
+  text-align: left;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.annotation__textwrapper {
+  width: 100%;
+}
+.annotation__title, .annotation__subtitle {
+  overflow-x: visible;
+  overflow-y: hidden;
+  height: 2rem;
+  width: auto;
+}
+.annotation__subtitle {
+  margin-top: 12px;
+}
+.annotation__paragraph__text {
+  font-size: 16px;
+}
+.visible {
+  /* opacity: 1; */
+  transition: opacity 2.5s ease;
+}
