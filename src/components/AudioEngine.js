@@ -429,6 +429,7 @@ class AudioEngine extends React.Component {
 				// console.log(frequency)
 				// console.log('ctx.currentTime')
 				// console.log(ctx.currentTime)
+				// console.log(vco.frequency)
 				vco.frequency.setValueAtTime(frequency, ctx.currentTime);
 			}
 		});
