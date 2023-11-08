@@ -398,12 +398,20 @@ class AudioEngine extends React.Component {
 		// this.props.pressNote(note, velocity);
     // return
 
-		const baseFrequency = this.getBaseFrequency(note);
+		const baseFrequency = self.getBaseFrequency(note);
+
+		console.log('- - - - - - - - - - - - -')
+		// console.log(typeof this.vco)
+		console.log(note)
+		console.log('- - - - - - 2 - - - - - - -')
+		console.log(baseFrequency)
+
+		// return
 
     // console.log('vco length')
     // console.log(this.vco.length)
 		this.vco.forEach((vco, i) => {
-			let frequency = this.getVCOFrequency(i, baseFrequency);
+			let frequency = this.getVCOFrequency(i, baseFrequency === undefined ? 0 : baseFrequency);
 
 			// console.log('vco')
 			// console.log(vco)

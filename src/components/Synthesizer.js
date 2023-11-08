@@ -164,12 +164,13 @@ export function SynthScene( {props} ) {
     event.stopPropagation()
     console.log( 'onPointerLeave' )
 
-    // liftKey( event )
+    liftKey( event )
   }
   
   const onPointerMove = (event) => {
     event.stopPropagation()
-    // console.log( 'onPointerMove' )
+    console.log( 'onPointerMove' )
+    console.log( event )
   }
 
   return (
