@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Canvas, useFrame } from '@react-three/fiber'
 import { useGLTF, MeshReflectorMaterial, BakeShadows } from '@react-three/drei'
 import { OrbitControls } from '@react-three/drei'
@@ -6,7 +7,30 @@ import { easing } from 'maath'
 // import { Instances, Computers } from './Computers'
 import Synth from './components/Synth.js'
 
-export default function Experience() {
+export default function Experience({
+  ...props
+}) {
+
+  const [freq, setFreq] = useState(0);
+
+  useEffect(() => {
+    console.log('useEffect - Experience')
+  }, [])
+
+  function changeValue(val) {
+    console.log('changeValue - Experience')
+    console.log(`changeValue - Experience - ${val}`)
+    
+    props.playTone( val )
+    // if (freq === freqOld) {
+    //   // console.log('same')
+    //   setFreq(val)
+    // }
+    // else {
+    //   setFreqOld(freq)
+    // }
+  }
+
   return (
     <Canvas shadows dpr={[1, 1.5]} camera={{ position: [-1.5, 1, 5.5], fov: 45, near: 0.1, far: 20 }} eventSource={document.getElementById('root')} eventPrefix="client">
       {/* Lights */}
@@ -21,7 +45,11 @@ export default function Experience() {
           <Computers scale={0.5} />
         </Instances> */}
 
-        <Synth url={'/lagoon-3D-synth-2.2.3.glb'} position={[0, 1, 0]} rotation={[0, 0, 0]} hasCollider={false} scale={1} />
+        <Synth
+          playTone={(val) => changeValue(val) }
+          // keyPressed={keyPressed} 
+          url={'/lagoon-3D-synth-2.2.3.glb'} position={[0, 1, 0]} rotation={[0, 0, 0]} hasCollider={false} scale={1}
+        />
 
         {/* Plane reflections + distance blur */}
         <mesh receiveShadow rotation={[-Math.PI / 2, 0, 0]}>

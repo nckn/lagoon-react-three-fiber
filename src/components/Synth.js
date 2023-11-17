@@ -16,7 +16,13 @@ const textureDiffusePath = '/textures/cabinet/lagoon_2.2.0_cabinet_baked_w_text.
 // import carHit3 from '../../public/sounds/car-hit-3.mp3'
 // import bowlingPin1Sound from '../../public/sounds/bowling/pin-1.mp3'
 
-export default function Synth({ url, position, rotation, scale = 1, hasCollider = false }) {
+let toneFreq = [
+  'C3', 'Db3', 'D3', 'Eb3', 'E3', 'F3', 'Gb3', 'G3',
+  'Ab3', 'A3', 'Bb3', 'B3', 'C4', 'Db4', 'D4',
+  'Eb4', 'E4'
+];
+
+export default function Synth({ url, position, rotation, scale = 1, hasCollider = false, ...props }) {
   const { scene, animations } = useGLTF( url );
   const [ characterMeshes, setCharacterMeshes ] = useState([])
   const [ separateMesh ] = useState(true)
@@ -36,6 +42,9 @@ export default function Synth({ url, position, rotation, scale = 1, hasCollider 
 
   useEffect(() => {
     console.log('useEffect')
+
+    console.log('props')
+    console.log(props)
     
     setupScene()
 
@@ -166,7 +175,15 @@ export default function Synth({ url, position, rotation, scale = 1, hasCollider 
     console.log( 'onPointerEnter' )
 
     if (mesh.name.includes('Key')) {
-      playKey( event )
+      // child.castShadow = false
+      var keyIndex = mesh.name.split(/[@-]/);
+      // console.log(keyIndex)
+      mesh.keyIndex = parseInt(keyIndex[1])
+      mesh.noteName = keyIndex[2]
+      // console.log('key index: ', key.keyIndex)
+      // self.allKeys.push(key)
+
+      playKey( event, mesh, mesh.keyIndex )
     }
   }
 
@@ -184,16 +201,21 @@ export default function Synth({ url, position, rotation, scale = 1, hasCollider 
   }
 
   // *** Play the key
-  const playKey = (obj) => {
+  const playKey = (obj, mesh, keyIndex) => {
     // const obj = event.object
-    
-    // if (obj === null) {
-    //   props.playTone('empty')
-    //   return
-    // }
-    // else {
-    //   props.playTone(toneFreq[parseInt(obj.keyIndex)])
-    // }
+    console.log( 'playKey' )
+    // console.log( mesh )
+    console.log( keyIndex )
+    console.log( toneFreq[parseInt(keyIndex)] )
+
+    if (obj === null) {
+      props.playTone('empty')
+      return
+    }
+    else {
+      // props.playTone(toneFreq[parseInt(mesh.keyIndex)])
+      props.playTone(toneFreq[parseInt(keyIndex)])
+    }
 
     // We receive an order to play key and it comes from the raycaster
     gsap.to(obj.object.rotation, timeOfBarPress, {x: keyRot, ease: Sine.easeOut});
@@ -220,7 +242,7 @@ export default function Synth({ url, position, rotation, scale = 1, hasCollider 
     console.log(obj)
     
     // AudioEngine related
-    // props.playTone('empty')
+    props.playTone('empty')
 
     // if (obj === null) {
     //   props.playTone('empty')

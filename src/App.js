@@ -96,6 +96,8 @@ function App( props ) {
 	// }, [props, keyPressed])
 
   function changeValue(val) {
+		console.log('changeValue - App')
+		console.log(`changeValue - App - ${val}`)
     if (freq === freqOld) {
       // console.log('same')
       setFreq(val)
@@ -155,7 +157,7 @@ function App( props ) {
 
       <Tooltip />
       
-      <Experience />
+      <Experience playTone={(val) => changeValue(val) } keyPressed={keyPressed} />
 
 			<GUIPanel
 				onButtonPressed={(val) => buttonCommand(val) }
