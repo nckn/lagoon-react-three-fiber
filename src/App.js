@@ -4,6 +4,7 @@ import AudioEngine from "./components/AudioEngine";
 import Base from "./components/Base";
 
 import { Synthesizer } from './components/Synthesizer.js'
+import Experience from './Experience.js'
 import SplashScreen from "./components/SplashScreen";
 
 import './assets/scss/GUIPanel.scss'
@@ -74,8 +75,8 @@ function App( props ) {
 
 	// const ThemeContext = createContext(null)
 
-	console.log('App')
-	console.log(props)
+	// console.log('App')
+	// console.log(props)
 
 	const [ settings, setSettings ] = useState(
 		{
@@ -147,12 +148,14 @@ function App( props ) {
 			{/* <SplashScreen module={"power"} value={ powerActive } /> */}
 			{/* <SplashScreen module={"power"} value={ false } /> */}
 
-			<Synthesizer playTone={(val) => changeValue(val) } keyPressed={keyPressed} />
+			{/* <Synthesizer playTone={(val) => changeValue(val) } keyPressed={keyPressed} /> */}
 			{/* <ThemeContext.Provider props={ props }>
 				<Synthesizer />
 			</ThemeContext.Provider> */}
 
       <Tooltip />
+      
+      <Experience />
 
 			<GUIPanel
 				onButtonPressed={(val) => buttonCommand(val) }

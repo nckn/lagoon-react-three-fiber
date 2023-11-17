@@ -45,8 +45,8 @@ export function SynthScene( {props} ) {
   // const hamburger = useGLTF('/hamburger.glb')
 
   // console.log('SynthScene')
-  console.log('props')
-  console.log(props)
+  // console.log('props')
+  // console.log(props)
 
   useEffect(() => {
     console.log('SynthScene - useEffect')
@@ -112,8 +112,8 @@ export function SynthScene( {props} ) {
 
   const liftKey = (event) => {
     const obj = event.object
-    console.log('- - - leave - - -')
-    console.log(obj)
+    // console.log('- - - leave - - -')
+    // console.log(obj)
     props.playTone('empty')
     // if (obj === null) {
     //   props.playTone('empty')
@@ -129,9 +129,9 @@ export function SynthScene( {props} ) {
   const onClick = (event) => {
     event.stopPropagation()
     console.log( 'onClick' )
-    console.log( event )
-    console.log( event.object.name )
-    console.log( event.eventObject )
+    // console.log( event )
+    // console.log( event.object.name )
+    // console.log( event.eventObject )
   }
   
   const onPointerOver = (event) => {
@@ -141,8 +141,8 @@ export function SynthScene( {props} ) {
   
   const onPointerEnter = (event) => {
     event.stopPropagation()
-    console.log( event.object.name )
-    console.log( 'onPointerEnter' )
+    // console.log( event.object.name )
+    // console.log( 'onPointerEnter' )
 
     if (event.object.name.includes('Key')) {
       playKey( event )
@@ -162,15 +162,15 @@ export function SynthScene( {props} ) {
   
   const onPointerLeave = (event) => {
     event.stopPropagation()
-    console.log( 'onPointerLeave' )
+    // console.log( 'onPointerLeave' )
 
     liftKey( event )
   }
   
   const onPointerMove = (event) => {
     event.stopPropagation()
-    console.log( 'onPointerMove' )
-    console.log( event )
+    // console.log( 'onPointerMove' )
+    // console.log( event )
   }
 
   return (
