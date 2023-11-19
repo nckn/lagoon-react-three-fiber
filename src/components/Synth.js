@@ -260,6 +260,7 @@ export default function Synth({ url, position, rotation, scale = 1, hasCollider 
   const onPointerDown = (event, mesh) => {
     event.stopPropagation()
     console.log( 'onPointerDown' )
+    console.log( mesh.name )
     // console.log( event )
 
     setMouseIsDown(true)
@@ -385,6 +386,7 @@ export default function Synth({ url, position, rotation, scale = 1, hasCollider 
         )
       </group>
       
+      {/* Knobs - start */}
       <group
         position={position}
         rotation={rotation}
@@ -406,13 +408,14 @@ export default function Synth({ url, position, rotation, scale = 1, hasCollider 
                 onPointerLeave={(e) => { onPointerLeave(e, mesh) }}
                 onPointerDown={(e) => { onPointerDown(e, mesh) }}
                 onPointerUp={(e) => { onPointerUp(e, mesh) }}
-                onPointerMove={(e) => { onPointerMove(e, mesh) }}
+                // onPointerMove={(e) => { onPointerMove(e, mesh) }}
               >
               </mesh>
             )
           ))}
         ) : null
       </group>
+      {/* Knobs - end */}
 
       <group rotation={rotation} position={position} scale={scale}>
         <primitive object={scene}></primitive>

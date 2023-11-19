@@ -76,6 +76,7 @@ function App( props ) {
 
 	const [controlsEnabledMaster, setControlsEnabledMaster] = useState(true);
 
+	let realMouse = {x: 0, y: 0}
 	// const ThemeContext = createContext(null)
 
 	// console.log('App')
@@ -129,6 +130,20 @@ function App( props ) {
 
 		setControlsEnabledMaster( true )
 	};
+	
+	const handlePointerMove = (e) => {
+		// Handle the pointer up event
+		// console.log('handlePointerMove', e);
+		console.log(e);
+
+		realMouse.x = e.touches ? e.touches[0].pageX : e.clientX
+    realMouse.y = e.touches ? e.touches[0].pageY : e.clientY
+
+		// console.log(realMouse)
+		// console.log('handlePointerMove:', event);
+
+		// setControlsEnabledMaster( true )
+	};
 
 	// if (size.height < 600 || size.width < 900)
 	// 	return (
@@ -141,7 +156,10 @@ function App( props ) {
 	// 		</PhoneContainer>
 	// 	);
 	return (
-		<AppContainer height={size.height} onPointerUp={handlePointerUp}>
+		<AppContainer height={size.height}
+			onPointerUp={handlePointerUp}
+			onPointerMove={handlePointerMove}
+		>
 			
 			<AudioEngine keyWasPressed={(val) => keyWasPressed(val) } toneIs={freq}></AudioEngine>
 			{/* <AudioEngine toneIs={freq}></AudioEngine> */}
