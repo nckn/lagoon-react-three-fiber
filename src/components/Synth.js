@@ -24,13 +24,23 @@ let toneFreq = [
 
 export default function Synth({ url, position, rotation, scale = 1, hasCollider = false, ...props }) {
   const { scene, animations } = useGLTF( url );
-  const [ characterMeshes, setCharacterMeshes ] = useState([])
+  const [ keyMeshes, setKeyMeshes ] = useState([])
+  const [ knobMeshes, setKnobMeshes ] = useState([])
   const [ separateMesh ] = useState(true)
   const [ rotX, setRotX ] = useState( 0 )
+
+  // Turning knobs and moving sliders
+  const [ mouseIsDown, setMouseIsDown ] = useState(false)
 
   const timeOfBarPress = 0.2
   const keyRot = Math.PI / 20
   let pianoKeyTest = null
+
+  let mouse = {x: 0, y: 0}
+  let realMouse = {x: 0, y: 0}
+  let currentX = 0
+  let dragDir = 0
+  let dragPower = 0.1
 
   // The bars
   const meshRefs = useRef([]);
@@ -56,13 +66,15 @@ export default function Synth({ url, position, rotation, scale = 1, hasCollider 
     const sceneMeshes = scene.children[ 0 ]
     // Add to characters
     // characters.push(sceneMeshes)
-    let characterParts = []
+    let keyObjects = []
+    let knobObjects = []
+
     scene.traverse((object) => {
         // console.log(object)
         // if (object.isMesh) {
-        //     characterParts.push(object);
+        //     keyObjects.push(object);
         // }
-        console.log(object.name)
+        // console.log(object.name)
 
         if (object.isMesh && object.name === 'cabinet') {
           object.receiveShadow = true
@@ -89,16 +101,30 @@ export default function Synth({ url, position, rotation, scale = 1, hasCollider 
         // console.log(object.name)
         if (object.isMesh && object.name.includes('Key') && object.name !== 'cabinet') {
           object.visible = false;
-          characterParts.push(object);
+          keyObjects.push(object);
           // Add a ref for this mesh
           meshRefs.current.push(React.createRef());
           rigidRefs.current.push(React.createRef());
+        }
+        
+        // console.log(object.name)
+        if (
+          object.name.includes('Knob') ||
+          object.name.includes('Pin')
+        ) {
+          object.visible = false;
+          // knobObjects.push(knobObjects);
+          console.log(object.name)
+          knobObjects.push(object);
+          // Add a ref for this mesh
+          // meshRefs.current.push(React.createRef());
+          // rigidRefs.current.push(React.createRef());
         }
 
         // object.visible = false;
         if (object.name === 'Key@2-D3') {
           // object.visible = false;
-          // characterParts.push(object);
+          // keyObjects.push(object);
           // Add a ref for this mesh
           // meshRefs.current.push(React.createRef());
           // alert('found key')
@@ -108,7 +134,8 @@ export default function Synth({ url, position, rotation, scale = 1, hasCollider 
 
     pianoKeyTest = scene.getObjectByName( 'Key@2-D3' )
 
-    setCharacterMeshes(characterParts);
+    setKeyMeshes(keyObjects);
+    setKnobMeshes(knobObjects);
   }
 
   const setupKeyListeners = ( obj ) => {
@@ -169,12 +196,13 @@ export default function Synth({ url, position, rotation, scale = 1, hasCollider 
   
   const onPointerEnter = (event, mesh) => {
     event.stopPropagation()
-    console.log( event.object )
-    console.log( mesh )
+    // console.log( event.object )
+    // console.log( mesh )
     // console.log( event.object.name )
-    console.log( 'onPointerEnter' )
+    // console.log( 'onPointerEnter' )
 
     if (mesh.name.includes('Key')) {
+      console.log( 'onPointerEnter - Key' )
       // child.castShadow = false
       var keyIndex = mesh.name.split(/[@-]/);
       // console.log(keyIndex)
@@ -184,6 +212,22 @@ export default function Synth({ url, position, rotation, scale = 1, hasCollider 
       // self.allKeys.push(key)
 
       playKey( event, mesh, mesh.keyIndex )
+    }
+   
+    if (
+      mesh.name.includes('Knob')
+    ) {
+      console.log( 'onPointerEnter - Knob' )
+      console.log( mesh.name )
+      // child.castShadow = false
+      // var keyIndex = mesh.name.split(/[@-]/);
+      // // console.log(keyIndex)
+      // mesh.keyIndex = parseInt(keyIndex[1])
+      // mesh.noteName = keyIndex[2]
+      // // console.log('key index: ', key.keyIndex)
+      // // self.allKeys.push(key)
+
+      // playKey( event, mesh, mesh.keyIndex )
     }
   }
 
@@ -197,7 +241,47 @@ export default function Synth({ url, position, rotation, scale = 1, hasCollider 
   const onPointerMove = (event) => {
     event.stopPropagation()
     console.log( 'onPointerMove' )
-    console.log( event )
+    // console.log( event )
+
+    if (mouseIsDown) {
+      if (currentX < realMouse.x) {
+        // console.log('up')
+        dragDir = -dragPower
+      }
+      else if (currentX > realMouse.x) {
+        // console.log('down')
+        dragDir = dragPower
+      
+        currentX = realMouse.x
+      }
+    }
+  }
+  
+  const onPointerDown = (event, mesh) => {
+    event.stopPropagation()
+    console.log( 'onPointerDown' )
+    // console.log( event )
+
+    setMouseIsDown(true)
+
+    if (mesh.name.includes('Knob')) {
+      props.toggleControls(false)
+    }
+
+  }
+  
+  const onPointerUp = (event, mesh) => {
+    event.stopPropagation()
+    console.log( 'onPointerUp' )
+    // console.log( event )
+
+    setMouseIsDown(false)
+    props.toggleControls(true)
+
+    // if (mesh.name.includes('Knob')) {
+    //   props.toggleControls(false)
+    // }
+
   }
 
   // *** Play the key
@@ -263,7 +347,7 @@ export default function Synth({ url, position, rotation, scale = 1, hasCollider 
         // scale={scale}
       >
         separateMesh ? (
-          {characterMeshes.map((mesh, index) => (
+          {keyMeshes.map((mesh, index) => (
             mesh.name !== 'cabinet' && (
               <mesh
                 ref={meshRefs.current[index]}
@@ -300,6 +384,36 @@ export default function Synth({ url, position, rotation, scale = 1, hasCollider 
           </group> */}
         )
       </group>
+      
+      <group
+        position={position}
+        rotation={rotation}
+        // scale={scale}
+      >
+        separateMesh ? (
+          {knobMeshes.map((mesh, index) => (
+            mesh.name !== 'cabinet' && (
+              <mesh
+                // ref={meshRefs.current[index]}
+                key={`${mesh.name}-${index}`}
+                geometry={mesh.geometry}
+                position={[mesh.position.x * scale, mesh.position.y * scale, mesh.position.z * scale]}
+                receiveShadow
+                castShadow
+                material={mesh.material}
+                scale={scale}
+                onPointerEnter={(e) => { onPointerEnter(e, mesh) }}
+                onPointerLeave={(e) => { onPointerLeave(e, mesh) }}
+                onPointerDown={(e) => { onPointerDown(e, mesh) }}
+                onPointerUp={(e) => { onPointerUp(e, mesh) }}
+                onPointerMove={(e) => { onPointerMove(e, mesh) }}
+              >
+              </mesh>
+            )
+          ))}
+        ) : null
+      </group>
+
       <group rotation={rotation} position={position} scale={scale}>
         <primitive object={scene}></primitive>
       </group>

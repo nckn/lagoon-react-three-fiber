@@ -8,6 +8,7 @@ import Experience from './Experience.js'
 import SplashScreen from "./components/SplashScreen";
 
 import './assets/scss/GUIPanel.scss'
+import './assets/scss/index.scss'
 
 // import BottomBar from "./components/BottomBar";
 // import Modal from "./components/Modal";
@@ -73,6 +74,8 @@ function App( props ) {
   const [freqOld, setFreqOld] = useState(0);
   const [keyPressed, setKeyPressed] = useState(0);
 
+	const [controlsEnabledMaster, setControlsEnabledMaster] = useState(true);
+
 	// const ThemeContext = createContext(null)
 
 	// console.log('App')
@@ -120,6 +123,13 @@ function App( props ) {
     // console.log(val)
   }
 
+	const handlePointerUp = (event) => {
+		// Handle the pointer up event
+		console.log('Pointer up event triggered', event);
+
+		setControlsEnabledMaster( true )
+	};
+
 	// if (size.height < 600 || size.width < 900)
 	// 	return (
 	// 		<PhoneContainer>
@@ -131,7 +141,7 @@ function App( props ) {
 	// 		</PhoneContainer>
 	// 	);
 	return (
-		<AppContainer height={size.height}>
+		<AppContainer height={size.height} onPointerUp={handlePointerUp}>
 			
 			<AudioEngine keyWasPressed={(val) => keyWasPressed(val) } toneIs={freq}></AudioEngine>
 			{/* <AudioEngine toneIs={freq}></AudioEngine> */}
@@ -157,7 +167,7 @@ function App( props ) {
 
       <Tooltip />
       
-      <Experience playTone={(val) => changeValue(val) } keyPressed={keyPressed} />
+      <Experience controlsEnabled={controlsEnabledMaster} playTone={(val) => changeValue(val) } keyPressed={keyPressed} />
 
 			<GUIPanel
 				onButtonPressed={(val) => buttonCommand(val) }
