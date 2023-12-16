@@ -20,6 +20,8 @@ import { createSelector } from 'reselect'
 import { setParam } from "./actions/actions.js";
 import { bindActionCreators } from "redux";
 import { useState, useEffect } from "react";
+
+import useGame from './store/useGame.jsx'
 // import AnimatedText from "./components/Onboarding/AnimatedText";
 
 import Controls from "./components/Controls";
@@ -73,6 +75,11 @@ function App( props ) {
   const [powerActive, setPowerActive] = useState(false);
   const [freqOld, setFreqOld] = useState(0);
   const [keyPressed, setKeyPressed] = useState(0);
+
+	const isMouseDown = useGame((state) => state.isMouseDown)
+
+	// Turning knobs and moving sliders
+  const [ mouseIsDown, setMouseIsDown ] = useState(false)
 
 	const [controlsEnabledMaster, setControlsEnabledMaster] = useState(true);
 
@@ -129,15 +136,31 @@ function App( props ) {
 		console.log('Pointer up event triggered', event);
 
 		setControlsEnabledMaster( true )
+		
+		setMouseIsDown( false )
+	};
+	
+	const handlePointerDown = (event) => {
+		// Handle the pointer up event
+		console.log('Pointer down event triggered', event);
+
+		setMouseIsDown(true)
 	};
 	
 	const handlePointerMove = (e) => {
 		// Handle the pointer up event
 		// console.log('handlePointerMove', e);
-		console.log(e);
-
+		// console.log(e);
+		
 		realMouse.x = e.touches ? e.touches[0].pageX : e.clientX
     realMouse.y = e.touches ? e.touches[0].pageY : e.clientY
+		
+		if (mouseIsDown) {
+			console.log('mouse is Down');
+			console.log(realMouse);
+
+			console.log(e)
+		}
 
 		// console.log(realMouse)
 		// console.log('handlePointerMove:', event);
@@ -158,6 +181,7 @@ function App( props ) {
 	return (
 		<AppContainer height={size.height}
 			onPointerUp={handlePointerUp}
+			// onPointerDown={handlePointerDown}
 			onPointerMove={handlePointerMove}
 		>
 			

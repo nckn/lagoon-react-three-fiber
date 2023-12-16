@@ -8,6 +8,8 @@ import { useGLTF } from "@react-three/drei";
 // import { MeshCollider, RigidBody } from '@react-three/rapier'
 import gsap, { Sine } from 'gsap'
 
+import useGame from '../store/useGame';
+
 const textureLoader = new THREE.TextureLoader()
 
 // Load the cabinet baked texture
@@ -31,6 +33,8 @@ export default function Synth({ url, position, rotation, scale = 1, hasCollider 
 
   // Turning knobs and moving sliders
   const [ mouseIsDown, setMouseIsDown ] = useState(false)
+  // setters
+  const setMouseDown = useGame((state) => state.setMouseDown)
 
   const timeOfBarPress = 0.2
   const keyRot = Math.PI / 20
@@ -263,7 +267,8 @@ export default function Synth({ url, position, rotation, scale = 1, hasCollider 
     console.log( mesh.name )
     // console.log( event )
 
-    setMouseIsDown(true)
+    // setMouseIsDown(true)
+    setMouseDown(true) // *** zustand
 
     if (mesh.name.includes('Knob')) {
       props.toggleControls(false)
@@ -276,7 +281,9 @@ export default function Synth({ url, position, rotation, scale = 1, hasCollider 
     console.log( 'onPointerUp' )
     // console.log( event )
 
-    setMouseIsDown(false)
+    // setMouseIsDown(false)
+    setMouseDown(true) // *** zustand
+
     props.toggleControls(true)
 
     // if (mesh.name.includes('Knob')) {
