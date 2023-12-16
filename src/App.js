@@ -77,6 +77,7 @@ function App( props ) {
   const [keyPressed, setKeyPressed] = useState(0);
 
 	const isMouseDown = useGame((state) => state.isMouseDown)
+	const currentDragObject = useGame((state) => state.currentDragObject)
 
 	// Turning knobs and moving sliders
   const [ mouseIsDown, setMouseIsDown ] = useState(false)
@@ -84,6 +85,9 @@ function App( props ) {
 	const [controlsEnabledMaster, setControlsEnabledMaster] = useState(true);
 
 	let realMouse = {x: 0, y: 0}
+	let dragPower = 0.1
+	let currentX = 0
+  let dragDir = 0
 	// const ThemeContext = createContext(null)
 
 	// console.log('App')
@@ -158,9 +162,26 @@ function App( props ) {
 		
 		if (isMouseDown) {
 			console.log('mouse is Down');
-			console.log(realMouse);
+			// console.log(realMouse);
+			// console.log(e)
+			console.log(currentDragObject)
+			console.log(dragDir)
 
-			console.log(e)
+			// Drag logic
+			if (currentX < realMouse.x) {
+				// console.log('up')
+				dragDir = -dragPower
+			}
+			else if (currentX > realMouse.x) {
+				// console.log('down')
+				dragDir = dragPower
+			}
+			currentX = realMouse.x
+
+			// currentDragObject.rotation.y += dragDir
+			// currentDragObject.rotation.y += realMouse.x
+			currentDragObject.rotation.z = -0.6;
+			// currentDragObject.updateMatrix()
 		}
 
 		// console.log(realMouse)

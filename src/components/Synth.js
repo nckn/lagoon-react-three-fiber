@@ -46,6 +46,7 @@ export default function Synth({ url, position, rotation, scale = 1, hasCollider 
   const [ mouseIsDown, setMouseIsDown ] = useState(false)
   // setters
   const setMouseDown = useGame((state) => state.setMouseDown)
+  const setCurrentDragObject = useGame((state) => state.setCurrentDragObject)
 
   const timeOfBarPress = 0.2
   const keyRot = Math.PI / 20
@@ -280,6 +281,7 @@ export default function Synth({ url, position, rotation, scale = 1, hasCollider 
 
     // setMouseIsDown(true)
     setMouseDown(true) // *** zustand
+    setCurrentDragObject(mesh) // *** zustand
 
     if (mesh.name.includes('Knob')) {
       props.toggleControls(false)

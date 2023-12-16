@@ -5,6 +5,7 @@ export default create(subscribeWithSelector((set) =>
 {
     return {
         isMouseDown: false,
+        currentDragObject: null,
 
         blocksCount: 10,
         blocksSeed: 0,
@@ -34,6 +35,11 @@ export default create(subscribeWithSelector((set) =>
         setMouseDown: (newState) =>
             set((state) => ({
                 isMouseDown: newState
+        })),
+
+        setCurrentDragObject: (object) =>
+            set((state) => ({
+                currentDragObject: object
         })),
 
         start: () =>
