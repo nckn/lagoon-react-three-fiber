@@ -24,6 +24,17 @@ let toneFreq = [
   'Eb4', 'E4'
 ];
 
+function KnobIndicator(props) {
+  const mesh = useRef();
+  // useFrame(() => (mesh.current.rotation.x = mesh.current.rotation.y += 0.01));
+  return (
+     <mesh {...props} ref={mesh}>
+        <boxGeometry args={[0.01, 0.05, 0.05]} />
+        <meshStandardMaterial color={"black"} />
+     </mesh>
+  );
+}
+
 export default function Synth({ url, position, rotation, scale = 1, hasCollider = false, ...props }) {
   const { scene, animations } = useGLTF( url );
   const [ keyMeshes, setKeyMeshes ] = useState([])
@@ -417,6 +428,7 @@ export default function Synth({ url, position, rotation, scale = 1, hasCollider 
                 onPointerUp={(e) => { onPointerUp(e, mesh) }}
                 // onPointerMove={(e) => { onPointerMove(e, mesh) }}
               >
+                <KnobIndicator position={[0, 0.05, -0.025]} />
               </mesh>
             )
           ))}
