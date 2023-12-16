@@ -1,5 +1,7 @@
 import React, { createContext } from "react";
 import styled from "styled-components";
+import gsap, { Sine } from 'gsap'
+
 import AudioEngine from "./components/AudioEngine";
 import Base from "./components/Base";
 
@@ -178,9 +180,14 @@ function App( props ) {
 			}
 			currentX = realMouse.x
 
+			// currentDragObject.scale.y += 0.1
+			currentDragObject.rotation.set(0, Math.PI, Math.PI)
+			console.log(currentDragObject.rotation.y)
+
+			gsap.to(currentDragObject.rotation, 0.2, {x: 0.5, ease: Sine.easeOut});
 			// currentDragObject.rotation.y += dragDir
 			// currentDragObject.rotation.y += realMouse.x
-			currentDragObject.rotation.z = -0.6;
+			// currentDragObject.rotation.z = -0.6;
 			// currentDragObject.updateMatrix()
 		}
 
