@@ -151,11 +151,12 @@ function App( props ) {
 		// Handle the pointer up event
 		// console.log('handlePointerMove', e);
 		// console.log(e);
+		console.log(isMouseDown);
 		
 		realMouse.x = e.touches ? e.touches[0].pageX : e.clientX
     realMouse.y = e.touches ? e.touches[0].pageY : e.clientY
 		
-		if (mouseIsDown) {
+		if (isMouseDown) {
 			console.log('mouse is Down');
 			console.log(realMouse);
 

@@ -282,7 +282,7 @@ export default function Synth({ url, position, rotation, scale = 1, hasCollider 
     // console.log( event )
 
     // setMouseIsDown(false)
-    setMouseDown(true) // *** zustand
+    setMouseDown(false) // *** zustand
 
     props.toggleControls(true)
 
