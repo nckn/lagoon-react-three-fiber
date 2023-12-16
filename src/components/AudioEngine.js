@@ -400,11 +400,11 @@ class AudioEngine extends React.Component {
 
 		const baseFrequency = self.getBaseFrequency(note);
 
-		console.log('- - - - - - - - - - - - -')
-		// console.log(typeof this.vco)
-		console.log(note)
-		console.log('- - - - - - 2 - - - - - - -')
-		console.log(baseFrequency)
+		// console.log('- - - - - - - - - - - - -')
+		// // console.log(typeof this.vco)
+		// console.log(note)
+		// console.log('- - - - - - 2 - - - - - - -')
+		// console.log(baseFrequency)
 
 		// return
 

@@ -19,8 +19,8 @@ export default function Experience({
   }, [props.controlsEnabled])
 
   function changeValue(val) {
-    console.log('changeValue - Experience')
-    console.log(`changeValue - Experience - ${val}`)
+    // console.log('changeValue - Experience')
+    // console.log(`changeValue - Experience - ${val}`)
     
     props.playTone( val )
     // if (freq === freqOld) {

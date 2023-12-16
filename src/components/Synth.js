@@ -144,8 +144,8 @@ export default function Synth({ url, position, rotation, scale = 1, hasCollider 
 
   const setupKeyListeners = ( obj ) => {
     document.addEventListener('keydown', (event) => {
-      console.log('keydown')
-      console.log(pianoKeyTest)
+      // console.log('keydown')
+      // console.log(pianoKeyTest)
       // gsap.to(pianoKeyTest.rotation, { duration: 0.2, x: -Math.PI / 2, ease: "expo.out" })
       pianoKeyTest.visible = false
 
@@ -156,14 +156,14 @@ export default function Synth({ url, position, rotation, scale = 1, hasCollider 
   }
 
   const onKeyEnter = ( obj ) => {
-    console.log('onKeyEnter')
-    console.log(obj)
+    // console.log('onKeyEnter')
+    // console.log(obj)
     // playSound( obj.soundURL )
   }
 
   const onKeyExit = ( obj ) => {
-    console.log('onKeyExit')
-    console.log(obj)
+    // console.log('onKeyExit')
+    // console.log(obj)
     // playSound( obj.soundURL )
   }
 
@@ -187,10 +187,10 @@ export default function Synth({ url, position, rotation, scale = 1, hasCollider 
 
   const onClick = (event) => {
     event.stopPropagation()
-    console.log( 'onClick' )
-    console.log( event )
-    console.log( event.object.name )
-    console.log( event.eventObject )
+    // console.log( 'onClick' )
+    // console.log( event )
+    // console.log( event.object.name )
+    // console.log( event.eventObject )
   }
   
   const onPointerOver = (event) => {
@@ -206,7 +206,7 @@ export default function Synth({ url, position, rotation, scale = 1, hasCollider 
     // console.log( 'onPointerEnter' )
 
     if (mesh.name.includes('Key')) {
-      console.log( 'onPointerEnter - Key' )
+      // console.log( 'onPointerEnter - Key' )
       // child.castShadow = false
       var keyIndex = mesh.name.split(/[@-]/);
       // console.log(keyIndex)
@@ -221,8 +221,8 @@ export default function Synth({ url, position, rotation, scale = 1, hasCollider 
     if (
       mesh.name.includes('Knob')
     ) {
-      console.log( 'onPointerEnter - Knob' )
-      console.log( mesh.name )
+      // console.log( 'onPointerEnter - Knob' )
+      // console.log( mesh.name )
       // child.castShadow = false
       // var keyIndex = mesh.name.split(/[@-]/);
       // // console.log(keyIndex)
@@ -237,14 +237,14 @@ export default function Synth({ url, position, rotation, scale = 1, hasCollider 
 
   const onPointerLeave = (event, mesh) => {
     event.stopPropagation()
-    console.log( 'onPointerLeave' )
+    // console.log( 'onPointerLeave' )
 
     liftKey( event )
   }
   
   const onPointerMove = (event) => {
     event.stopPropagation()
-    console.log( 'onPointerMove' )
+    // console.log( 'onPointerMove' )
     // console.log( event )
 
     if (mouseIsDown) {
@@ -278,7 +278,7 @@ export default function Synth({ url, position, rotation, scale = 1, hasCollider 
   
   const onPointerUp = (event, mesh) => {
     event.stopPropagation()
-    console.log( 'onPointerUp' )
+    // console.log( 'onPointerUp' )
     // console.log( event )
 
     // setMouseIsDown(false)
@@ -295,10 +295,10 @@ export default function Synth({ url, position, rotation, scale = 1, hasCollider 
   // *** Play the key
   const playKey = (obj, mesh, keyIndex) => {
     // const obj = event.object
-    console.log( 'playKey' )
-    // console.log( mesh )
-    console.log( keyIndex )
-    console.log( toneFreq[parseInt(keyIndex)] )
+    // console.log( 'playKey' )
+    // // console.log( mesh )
+    // console.log( keyIndex )
+    // console.log( toneFreq[parseInt(keyIndex)] )
 
     if (obj === null) {
       props.playTone('empty')
@@ -330,8 +330,8 @@ export default function Synth({ url, position, rotation, scale = 1, hasCollider 
   const liftKey = (obj) => {
     // const obj = event.object
     // const obj = mesh
-    console.log('- - - leave - - -')
-    console.log(obj)
+    // console.log('- - - leave - - -')
+    // console.log(obj)
     
     // AudioEngine related
     props.playTone('empty')

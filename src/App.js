@@ -103,12 +103,12 @@ function App( props ) {
 		// return (
 		// )
 		// setPowerActive( props.power.active )
-	}, [props])
+	}, [props, isMouseDown])
 	// }, [props, keyPressed])
 
   function changeValue(val) {
-		console.log('changeValue - App')
-		console.log(`changeValue - App - ${val}`)
+		// console.log('changeValue - App')
+		// console.log(`changeValue - App - ${val}`)
     if (freq === freqOld) {
       // console.log('same')
       setFreq(val)
