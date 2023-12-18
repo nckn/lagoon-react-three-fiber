@@ -32,6 +32,8 @@ import ThreeView from "./components/ThreeView";
 import Tooltip from "./components/Tooltip";
 import GUIPanel from "./components/GUIPanel";
 
+import { map } from './helpers.js'
+
 const defaultValue = { title: "Bag" };
 const ThemeContext = React.createContext(defaultValue);
 
@@ -78,13 +80,19 @@ function App( props ) {
   const [freqOld, setFreqOld] = useState(0);
   const [keyPressed, setKeyPressed] = useState(0);
 
+
+	// getter
 	const isMouseDown = useGame((state) => state.isMouseDown)
-	const currentDragObject = useGame((state) => state.currentDragObject)
+	// setters
+  const setMouseDown = useGame((state) => state.setMouseDown)
+	let currentDragObject = useGame((state) => state.currentDragObject)
+	const setCurrentDragObject = useGame((state) => state.setCurrentDragObject)
 
 	// Turning knobs and moving sliders
   const [ mouseIsDown, setMouseIsDown ] = useState(false)
 
 	const [controlsEnabledMaster, setControlsEnabledMaster] = useState(true);
+	const setReverbValue = useGame((state) => state.setReverbValue);
 
 	let realMouse = {x: 0, y: 0}
 	let dragPower = 0.1
@@ -143,7 +151,12 @@ function App( props ) {
 
 		setControlsEnabledMaster( true )
 		
-		setMouseIsDown( false )
+		// setMouseIsDown(true)
+    setMouseDown(false) // *** zustand
+    setCurrentDragObject(null) // *** zustand
+		// setMouseIsDown( false )
+		// Reset current drag object
+		// currentDragObject = null
 	};
 	
 	const handlePointerDown = (event) => {
@@ -162,12 +175,13 @@ function App( props ) {
 		realMouse.x = e.touches ? e.touches[0].pageX : e.clientX
     realMouse.y = e.touches ? e.touches[0].pageY : e.clientY
 		
-		if (isMouseDown) {
+		if (isMouseDown && currentDragObject !== null) {
 			console.log('mouse is Down');
 			// console.log(realMouse);
 			// console.log(e)
-			console.log(currentDragObject)
-			console.log(dragDir)
+			// console.log(currentDragObject)
+			console.log(currentDragObject.name)
+			// console.log(dragDir)
 
 			// Drag logic
 			if (currentX < realMouse.x) {
@@ -182,7 +196,7 @@ function App( props ) {
 
 			// currentDragObject.scale.y += 0.1
 			// currentDragObject.rotation.set(0, Math.PI, Math.PI)
-			console.log(currentDragObject.rotation.y)
+			// console.log(currentDragObject.rotation.y)
 
 			// gsap.to(currentDragObject.rotation, 0.2, {y: 0.5, ease: Sine.easeOut});
 			currentDragObject.rotation.y += dragDir
@@ -203,6 +217,16 @@ function App( props ) {
 					currentDragObject.rotation.y = 2.4;
 				}
 			}
+
+			// KnobFXsReverb
+			if (currentDragObject.name === 'KnobFXsReverb') {
+				// var fxReverb = map(self.curGuiObject.rotation.y, -2.4, 2.4, 1, 0)
+				// this.props.fxs.reverb.dry = 1.0 - fxReverb
+				// this.props.fxs.reverb.wet = fxReverb
+				// console.log('it should change alright: ', fxReverb)
+				setReverbValue( map(currentDragObject.rotation.y, -2.4, 2.4, 1, 0 ) )
+			}
+			// setReverbValue
 
 			// currentDragObject.rotation.y += realMouse.x
 			// currentDragObject.rotation.z = -0.6;

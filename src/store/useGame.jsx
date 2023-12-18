@@ -6,6 +6,7 @@ export default create(subscribeWithSelector((set) =>
     return {
         isMouseDown: false,
         currentDragObject: null,
+        reverbValue: 0.5, // Default reverb value
 
         blocksCount: 10,
         blocksSeed: 0,
@@ -42,6 +43,8 @@ export default create(subscribeWithSelector((set) =>
                 currentDragObject: object
         })),
 
+        setReverbValue: (value) => set({ reverbValue: value }),
+        
         start: () =>
         {
             set((state) =>

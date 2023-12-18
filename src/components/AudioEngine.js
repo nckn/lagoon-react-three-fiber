@@ -15,6 +15,8 @@ import { AudioContext } from "standardized-audio-context";
 import { Distortion, Flanger, Reverb, Tremolo } from 'audio-effects';
 import { freq } from "tonal/index.js";
 
+import useGame from '../store/useGame.jsx'
+
 const transposeFrequencyByCents = (frequency, cents) => {
 	const freq = frequency * Math.pow(2, cents / 1200);
 	return freq;
@@ -107,6 +109,25 @@ class AudioEngine extends React.Component {
     this.setReverb()
 
 	}
+
+	applyReverb(store) {
+		let self = this
+    // Logic to apply the reverb value to your audio context
+    // For example:
+    // this.reverb.node.wet.value = reverbValue;
+		// console.log('self.dry')
+		// console.log(self.dry)
+		// console.log(typeof reverbValue)
+		// console.log(reverbValue)
+		
+		self.dry.gain.value = 1.0 - store.reverbValue
+		self.wet.gain.value = store.reverbValue
+		
+		// if (self.dry !== undefined && self.wet !== undefined) {
+		// 	self.dry.gain.value = 1.0 - reverbValue
+		// 	self.wet.gain.value = reverbValue
+		// }
+  }
 
   // If using effects remember to connect to the last output to this.analyzer
   applyEffects() {
@@ -489,6 +510,7 @@ class AudioEngine extends React.Component {
 	}
 
 	componentDidMount() {
+		let self = this
 		window.addEventListener("keydown", this.onKeyDown.bind(this));
 		window.addEventListener("keyup", this.onKeyUp.bind(this));
 
@@ -498,7 +520,21 @@ class AudioEngine extends React.Component {
 				.then(this.onMIDISuccess.bind(this), this.onMIDIFailure.bind(this));
 		} else {
 		}
+
+		this.unsubscribe = useGame.subscribe(
+      (reverbValue) => {
+        // this.applyReverb(reverbValue).bind(self);
+        this.applyReverb(reverbValue);
+      },
+      (state) => state.reverbValue
+    );
 	}
+
+	componentWillUnmount() {
+    if (this.unsubscribe) {
+      this.unsubscribe();
+    }
+  }
 
 	getTimeConstant(time) {
 		return Math.log(time + 1) / Math.log(100);
@@ -735,9 +771,10 @@ class AudioEngine extends React.Component {
     // Set Pitch
     self.pitchInfluence = nextProps.pitchbend.value
 
-    // Set Reverb
-    self.dry.gain.value = nextProps.fxs.reverb.dry
-    self.wet.gain.value = nextProps.fxs.reverb.wet
+    // Set Reverb // *** retired - start
+    // self.dry.gain.value = nextProps.fxs.reverb.dry
+    // self.wet.gain.value = nextProps.fxs.reverb.wet
+		// Set Reverb // *** retired - end
     
     // Set Delay
     self.delay.delayTime.value = nextProps.fxs.delay.time
