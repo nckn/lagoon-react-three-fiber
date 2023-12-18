@@ -128,7 +128,9 @@ export default function Synth({ url, position, rotation, scale = 1, hasCollider 
           object.name.includes('Knob') ||
           object.name.includes('Pin')
         ) {
-          object.visible = false;
+          // Hide the knob
+          // object.visible = false;
+
           // knobObjects.push(knobObjects);
           console.log(object.name)
           knobObjects.push(object);
@@ -429,8 +431,9 @@ export default function Synth({ url, position, rotation, scale = 1, hasCollider 
                 onPointerDown={(e) => { onPointerDown(e, mesh) }}
                 onPointerUp={(e) => { onPointerUp(e, mesh) }}
                 // onPointerMove={(e) => { onPointerMove(e, mesh) }}
+                visible={false}
               >
-                <KnobIndicator position={[0, 0.05, -0.025]} />
+                {/* <KnobIndicator position={[0, 0.05, -0.025]} /> */}
               </mesh>
             )
           ))}

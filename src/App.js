@@ -181,11 +181,29 @@ function App( props ) {
 			currentX = realMouse.x
 
 			// currentDragObject.scale.y += 0.1
-			currentDragObject.rotation.set(0, Math.PI, Math.PI)
+			// currentDragObject.rotation.set(0, Math.PI, Math.PI)
 			console.log(currentDragObject.rotation.y)
 
-			gsap.to(currentDragObject.rotation, 0.2, {x: 0.5, ease: Sine.easeOut});
-			// currentDragObject.rotation.y += dragDir
+			// gsap.to(currentDragObject.rotation, 0.2, {y: 0.5, ease: Sine.easeOut});
+			currentDragObject.rotation.y += dragDir
+
+			// Set min and max limit for knob
+			// Rotate the TUI
+			if (currentDragObject.name === 'Pitchbend') {
+				if (currentDragObject.rotation.z < -0.6) {
+					currentDragObject.rotation.z = -0.6;
+				} else if (currentDragObject.rotation.z > 0.6) {
+					currentDragObject.rotation.z = 0.6;
+				}
+			}
+			else {
+				if (currentDragObject.rotation.y < -2.4) {
+					currentDragObject.rotation.y = -2.4;
+				} else if (currentDragObject.rotation.y > 2.4) {
+					currentDragObject.rotation.y = 2.4;
+				}
+			}
+
 			// currentDragObject.rotation.y += realMouse.x
 			// currentDragObject.rotation.z = -0.6;
 			// currentDragObject.updateMatrix()
