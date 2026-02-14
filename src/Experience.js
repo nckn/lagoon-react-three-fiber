@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { connect } from "react-redux";
 import { Canvas, useFrame } from '@react-three/fiber'
 import { useGLTF, MeshReflectorMaterial, BakeShadows } from '@react-three/drei'
 import { OrbitControls } from '@react-three/drei'
@@ -7,12 +8,23 @@ import { easing } from 'maath'
 // import { Instances, Computers } from './Computers'
 import Synth from './components/Synth.js'
 
-export default function Experience({
+// Day = 0 (light/white), Night = 1 (dark/black)
+const THEME_COLORS = {
+  day: '#ffffff',
+  night: '#000000',
+};
+
+function Experience({
+  backgroundColor,
   ...props
 }) {
 
   const [freq, setFreq] = useState(0);
   const [controlsEnabled, setControlsEnabled] = useState(props.controlsEnabled);
+
+  // Resolve theme: value 1 = night (dark), value 0 or undefined = day (light)
+  const isNight = backgroundColor?.value === 1;
+  const bgColor = isNight ? THEME_COLORS.night : THEME_COLORS.day;
 
   useEffect(() => {
     console.log('useEffect - Experience')
@@ -41,8 +53,8 @@ export default function Experience({
       <Canvas
         shadows dpr={[1, 1.5]} camera={{ position: [-1.5, 1, 5.5], fov: 45, near: 0.1, far: 20 }} eventSource={document.getElementById('root')} eventPrefix="client"
       >
-        {/* Lights */}
-        <color attach="background" args={['black']} />
+        {/* Lights - background toggles between day (white) and night (black) */}
+        <color attach="background" args={[bgColor]} />
         <hemisphereLight intensity={0.15} groundColor="black" />
         <spotLight position={[10, 20, 10]} angle={0.12} penumbra={1} intensity={1} castShadow shadow-mapSize={1024} />
         {/* Main scene */}
@@ -97,6 +109,12 @@ export default function Experience({
     </div>
   )
 }
+
+const mapStateToProps = (state) => ({
+  backgroundColor: state.state?.backgroundColor,
+});
+
+export default connect(mapStateToProps)(Experience);
 
 function Bun(props) {
   // const { nodes } = useGLTF('https://market-assets.fra1.cdn.digitaloceanspaces.com/market-assets/models/bunny/model.gltf')

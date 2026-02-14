@@ -34,29 +34,29 @@ class GUIPanel extends React.Component {
   }
   
   componentDidMount() {
-    // console.log('mounting')
     this.setupKeyPresses()
+    this.syncThemeUI()
   }
 
-	componentDidUpdate(props) {
+  componentDidUpdate(prevProps) {
+    if (prevProps.backgroundColor?.value !== this.props.backgroundColor?.value) {
+      this.syncThemeUI()
+    }
+  }
 
-    // console.log('props')
-    // console.log(props)
-    // this.props = props
-    // console.log(this.props)
+  syncThemeUI() {
+    const themeBtn = document.querySelector('[name="icon-theme-scene"]')
+    if (!themeBtn) return
+    const isNight = this.props.backgroundColor?.value === 1
+    if (isNight) {
+      themeBtn.classList.add('theme--dark')
+      document.body.classList.add('body--night')
+    } else {
+      themeBtn.classList.remove('theme--dark')
+      document.body.classList.remove('body--night')
+    }
+  }
 
-		// if (props.keyPressed === this.oldKeyPressed) {
-    //   // console.log('same')
-    //   // setFreq(val)
-    // }
-    // else {
-    //   // console.log('a new one')
-    //   this.oldKeyPressed = props.keyPressed
-    //   this.pressDownKey(props.keyPressed)
-    //   // this.playKey({keyIndex: props.keyPressed})
-    // }
-    // TODO: Listen to onKeyUp
-	}
 
   // setupEventTracking() {
   //   var self = this
@@ -118,15 +118,8 @@ class GUIPanel extends React.Component {
   }
 
   onClick(e) {
-    console.log('we be clicking')
     const target = e.target
     const name = target.getAttribute('name')
-    // console.log(name)
-    // console.log(this.props)
-    const { value } = this.props;
-    // New state entity
-    // this.props.setPower(!value);
-    // return
 
     if (name === 'icon-lock') {
       const panel = document.querySelector('.gui-panel-master')
@@ -145,27 +138,9 @@ class GUIPanel extends React.Component {
     }
 
     if (name === 'icon-theme-scene') {
-      if (this.props.backgroundColor === undefined) {
-        this.props.setBackground(1)
-        target.classList.add('theme--dark')
-        document.body.classList.add('body--night')
-        return
-      }
-      // If the theme is light, make it dark
-      if (this.props.backgroundColor.value === 1) {
-        this.props.setBackground(0)
-        target.classList.remove('theme--dark')
-        document.body.classList.remove('body--night')
-        console.log('theme--dark remove')
-      }
-      // If the theme is dark, make it light
-      // else if (this.props.backgroundColor.value === 0) {
-      else {
-        this.props.setBackground(1)
-        target.classList.add('theme--dark')
-        document.body.classList.add('body--night')
-        console.log('theme--dark add')
-      }
+      // Toggle between day (0) and night (1)
+      const nextValue = this.props.backgroundColor?.value === 1 ? 0 : 1
+      this.props.setBackground(nextValue)
     }
 
   }

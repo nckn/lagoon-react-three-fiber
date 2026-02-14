@@ -12,7 +12,7 @@ export const setPower = (active) => ({
 });
 
 // New state entity
-export const setBackground = (value = 0) => ({
+export const setBackground = (value = 1) => ({
 	type: "SET_BACKGROUND",
 	value,
 });

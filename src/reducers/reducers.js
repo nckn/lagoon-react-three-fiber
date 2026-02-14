@@ -17,9 +17,10 @@ export let defaultState = {
 		active: false,
 		// active: true,
 	},
-	// backgroundColor: {
-	// 	value: 0
-	// },
+	// 0 = day (light), 1 = night (dark)
+	backgroundColor: {
+		value: 0,
+	},
 	threed: {
 		backgroundColor: 0,
 		camReset: 0,

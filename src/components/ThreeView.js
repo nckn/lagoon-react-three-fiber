@@ -409,7 +409,7 @@ class ThreeView extends React.Component {
       }
       else if (nextProps.backgroundColor.value === 0) {
         this.scene.background = this.theme.light.fogColor;
-        this.coneMesh.visible = false
+        this.coneMesh.visible = true
       }
 		}
 		
