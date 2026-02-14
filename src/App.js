@@ -31,6 +31,7 @@ import Controls from "./components/Controls";
 import ThreeView from "./components/ThreeView";
 import Tooltip from "./components/Tooltip";
 import GUIPanel from "./components/GUIPanel";
+import TopBar from "./components/TopBar";
 
 import { map } from './helpers.js'
 
@@ -44,7 +45,9 @@ const AppContainer = styled.div`
 	width: 100vw;
 	align-items: stretch;
 	overflow: hidden;
+	padding-top: 40px; /* TopBar height */
 `;
+
 
 const SynthContainer = styled(motion.div)`
 	width: 100vw;
@@ -255,7 +258,7 @@ function App( props ) {
 			// onPointerDown={handlePointerDown}
 			onPointerMove={handlePointerMove}
 		>
-			
+			<TopBar />
 			<AudioEngine keyWasPressed={(val) => keyWasPressed(val) } toneIs={freq}></AudioEngine>
 			{/* <AudioEngine toneIs={freq}></AudioEngine> */}
       
